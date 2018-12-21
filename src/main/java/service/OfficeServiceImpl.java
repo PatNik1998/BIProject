@@ -5,6 +5,7 @@ import model.Office;
 import org.springframework.beans.factory.annotation.Autowired;
 import repository.OfficeRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public class OfficeServiceImpl implements OfficeService {
@@ -16,7 +17,7 @@ public class OfficeServiceImpl implements OfficeService {
        this.officeRepository = officeRepository;
    }
     @Override
-    public Office getById(Integer id) {
+    public Office getOffice(Integer id) {
         Optional<Office> office = officeRepository.findById(id);
         if(office.isPresent()){
             return  office.get();
@@ -24,6 +25,26 @@ public class OfficeServiceImpl implements OfficeService {
 
         return null;
 
+
+    }
+
+    @Override
+    public List<Office> getOffices() {
+
+        List<Office> offices = officeRepository.findAll();
+        return offices;
+
+    }
+    @Override
+    public void saveOffice(Office office){
+
+        officeRepository.save(office);
+
+    }
+    @Override
+    public void updateOffice(Office office) {
+
+        officeRepository.save(office);
 
     }
 }
