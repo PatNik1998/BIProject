@@ -5,35 +5,52 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import service.EmployeeService;
 
-import java.awt.*;
+import java.util.List;
+
 
 @RestController
-@RequestMapping("api/employee/{id}")
+
 public class EmployeeController {
-    private final EmployeeService service;
+    private EmployeeService service;
+
     @Autowired
-    public EmployeeController(EmployeeService service){
+    public EmployeeController(EmployeeService service) {
         this.service = service;
     }
 
-    @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Employee> getEmployee(@PathVariable("id") Integer id ){
-            if(id == null){
-                return new ResponseEntity<Employee>(HttpStatus.BAD_REQUEST);
-            }
+    @RequestMapping("api/employee/{id}")
+    public Employee getEmployee(@PathVariable("id") Integer id) {
 
-            Employee employee = service.getById(id);
-
-            if(employee == null){
-                return new ResponseEntity<Employee>(HttpStatus.NOT_FOUND);
-            }
-
-            return new ResponseEntity<Employee>(employee, HttpStatus.OK);
+        return service.getEmployee(id);
     }
+
+    @RequestMapping("api/employee/list")
+    public List<Employee> getEmployees() {
+
+        List<Employee> employees = service.getEmployees();
+        return employees;
+    }
+
+    @RequestMapping("api/employee/save")
+    public void saveEmployee(Employee employee) {
+        service.saveEmployee(employee);
+        System.out.println("success");
+
+    }
+
+    @RequestMapping("api/employee/update")
+    public void updateEmployee(@RequestBody Employee employee, @PathVariable(name = "id") Integer id) {
+
+        Employee emp = service.getEmployee(id);
+
+        if (emp != null) {
+
+            service.updateEmployee(employee);
+        }
+
+    }
+
 }
