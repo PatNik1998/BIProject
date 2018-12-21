@@ -2,7 +2,14 @@ package service;
 
 import model.Office;
 
-public interface OfficeService {
+import java.util.List;
 
-    public Office getById(Integer id);
+public interface OfficeService {
+    public List<Office> getOffices();
+
+    public Office getOffice(Integer id);
+
+    public void saveOffice(Office office);
+
+    public void updateOffice(Office office);
 }
